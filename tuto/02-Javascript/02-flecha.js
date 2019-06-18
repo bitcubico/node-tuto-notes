@@ -32,5 +32,3 @@ let heroe = {
 };
 
 console.log(heroe.getFullName());
-
-// Para que esto funcione correctamente,
