@@ -40,12 +40,9 @@ let getSalarie = (employee) => {
     });
 }
 
-getEmployeeById(3).then(
-    employee => {
-        getSalarie(employee).then(
-            salarie => console.log(salarie),
-            (err) => console.log(err)
-        );
-    },
+getEmployeeById(1).then(
+    employee => getSalarie(employee),
     (err) => console.log(err)
-);
+).then(
+    salarie => console.log(salarie),
+    (err) => console.log(err));
