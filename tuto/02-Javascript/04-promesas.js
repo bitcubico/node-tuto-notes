@@ -27,14 +27,14 @@ getEmployeeById(1).then(
 
 let getSalarie = (employee) => {
     return new Promise((resolve, reject) => {
-        if (!this.employee) {
+        if (!employee) {
             reject('Por favor especifique el parametro employee');
             return;
         }
 
         let salarie = salaries.find(response => response.Id === employee.Id);
         if (!salarie)
-            reject(`No existe el empleado con id ${id}`);
+            reject(`No existe el empleado con id ${employee.Id} en la base de datos Salarios`);
         else
             resolve(salarie);
     });
