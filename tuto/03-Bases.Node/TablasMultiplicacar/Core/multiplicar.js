@@ -1,37 +1,45 @@
 // https://nodejs.org/dist/latest-v12.x/docs/api/fs.html#fs_file_system
 const fs = require('fs');
 
-let getMultiplicationData = (base, path) => {
-    if (!Number(base))
-        throw Error('Debe especificar una base numérica mayor a cero');
-
-    let data = '';
-    for (let i = 0; i <= 10; i++)
-        data += `${base} * ${i} = ${base*i}\n`;
-
+let writeDataFile = (path, data) => {
     fs.writeFile(path, data, (err) => {
         if (err)
             throw err;
     })
-
-    return path;
 }
 
-let BuildFile = (base) => {
+let GetMultiplicationData = (base, limit = 10) => {
+    if (!Number(base))
+        throw Error('Debe especificar una base numérica mayor a cero');
+
+    let data = '';
+    for (let i = 0; i <= limit; i++)
+        data += `${base} * ${i} = ${base*i}\n`;
+
+    return data;
+}
+
+let BuildFile = (base, limit) => {
     return new Promise((resolve, reject) => {
         try {
             let path = `tabla-multiplicar-del-${base}.txt`;
-            resolve(getMultiplicationData(base, path));
+            let data = GetMultiplicationData(base, limit);
+            writeDataFile(path, data);
+
+            resolve(path);
         } catch (error) {
             reject(error);
         }
     });
 }
 
-let BuildFileAsync = async(base) => {
+let BuildFileAsync = async(base, limit) => {
     try {
         let path = `tabla-multiplicar-async-del-${base}.txt`;
-        return getMultiplicationData(base, path);
+        let data = GetMultiplicationData(base, limit, path);
+        writeDataFile(path, data);
+
+        return path;
     } catch (error) {
         throw error;
     }
@@ -39,5 +47,6 @@ let BuildFileAsync = async(base) => {
 
 module.exports = {
     BuildFile,
-    BuildFileAsync
+    BuildFileAsync,
+    GetMultiplicationData
 }
