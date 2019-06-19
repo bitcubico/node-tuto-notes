@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/bitcubico/node-tuto-notes#readme",
   "dependencies": {
+    "colors": "^1.3.3",
     "yargs": "^13.2.4"
   },
   "devDependencies": {

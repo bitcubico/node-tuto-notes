@@ -11,3 +11,7 @@ Este paquete nos sirve para crear la interfaz de **help** del proyecto y para po
 Este paquete nos sirve para ver los resultados de los cambios realizados en un archivo que estamos observando cada vez que realizamos un cambio en el mismo.\
 **Instalación**\
 `npm install --save-dev nodemon` cuando se indica `--save-dev`, indicamos que este paquete va a ser usado solo en ambiente de desarrollo.
+### [colors](https://www.npmjs.com/package/colors)
+Este paquete nos sirve para que la **linea de comandos** sea mas agradable a la vista.\
+**Instalación**\
+`npm install colors --save` 
