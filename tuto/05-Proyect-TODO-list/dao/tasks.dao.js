@@ -12,6 +12,8 @@ const SaveAll = (data) => {
         if (err)
             throw new Error(err.message);
     });
+
+    return true;
 }
 
 const GetAll = () => {

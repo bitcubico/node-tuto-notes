@@ -34,9 +34,9 @@ let optUpd = {
 const argv = require('yargs')
     .command('add', 'Agrega una nueva tarea a la cola de la lista', optAdd)
     .command('upd', 'Actualiza la descripción de una nueva tarea específica', optUpd)
-    .command('complete', 'Marca una tarea como realizada', optComplete)
-    .command('get-all', 'Obtiene todas las tareas pendientes')
-    .command('get-complete', 'Obtiene todas las tareas completadas', )
+    .command('set-complete', 'Marca una tarea como realizada', optComplete)
+    .command('get-all-pending', 'Obtiene todas las tareas pendientes')
+    .command('get-all-complete', 'Obtiene todas las tareas completadas', )
     .help()
     .argv;
 

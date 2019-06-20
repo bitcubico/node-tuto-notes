@@ -26,13 +26,15 @@ switch (action) {
             .then(console.log(`La tarea [${argv.taskId}] fue actualizada correctamente`.green))
             .catch(err => console.log(err.red));
         break;
-    case 'complete':
+    case 'set-complete':
         todoCore.SetCompleteAsync(argv.taskId)
-            .then(console.log(`La tarea [${argv.taskId}] fue marcada como completada`.green))
+            .then(resp => resp ?
+                console.log(`La tarea [${argv.taskId}] fue marcada como completada`.green) :
+                console.log(`La tarea [${argv.taskId}] no se encuentra dentro de las pendientes o no existe en el listado`))
             .catch(err => console.log(err.red));
         break;
-    case 'get-all':
-        data = todoCore.GetAll();
+    case 'get-all-pending':
+        data = todoCore.GetAllPendingTask();
         if (isEmpty(data)) {
             console.table('No hay tareas pendientes por hacer'.green);
             break;
@@ -47,11 +49,25 @@ switch (action) {
                 '\n----------------'.green);
         });
 
-        console.log('\n=============================================='.blue);
+        console.log(`\n============== ${data.length} Tareas Pendientes ===============`.blue);
         break;
-    case 'get-complete':
-        data = todoCore.GetAllCompleteAsync();
-        console.log(data ? data.green : 'La lista de tareas completadas esta vacía');
+    case 'get-all-complete':
+        data = todoCore.GetAllCompleteTask();
+        if (isEmpty(data)) {
+            console.table('No hay tareas completadas aún'.green);
+            break;
+        }
+
+        console.log('============== Tareas Completadas ==============='.blue);
+        data.forEach(task => {
+            console.log(
+                `\nId: \t\t${task.id}`.green +
+                `\nDescripción: \t${task.description}`.green +
+                `\nF. Creación: \t${task.creationDate}`.green +
+                '\n----------------'.green);
+        });
+
+        console.log(`\n============== ${data.length} Tareas Completadas ===============`.blue);
         break;
     default:
         console.table('Acción desconocida');
