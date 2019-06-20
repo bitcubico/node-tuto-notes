@@ -28,6 +28,13 @@ switch (action) {
                 console.log(`Upss!! parece que tenemos problemas.`))
             .catch(err => console.log(err.message.red));
         break;
+    case 'del':
+        todoCore.DeleteAsync(argv.id)
+            .then(resp => resp ?
+                console.log(`La tarea [${argv.taskId}] fue eliminada correctamente`.green) :
+                console.log(`Upss!! parece que tenemos problemas.`))
+            .catch(err => console.log(err.message.red));
+        break;
     case 'set-complete':
         todoCore.SetCompleteAsync(argv.taskId)
             .then(resp => resp ?

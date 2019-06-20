@@ -45,6 +45,26 @@ const UpdateAsync = async(id, description) => {
     return dao.SaveAll(data);
 }
 
+const DeleteAsync = async(id) => {
+    if (!Number(id))
+        throw new Error('El parametro [id] debe ser de tipo numérico y positivo');
+
+    if (!TaskExist(id))
+        throw new Error(`La tarea con id [${id}] no existe`);
+
+    let data = GetAll();
+    let index = data.findIndex(task => task.id === id);
+
+    if (data[index].completed)
+        throw new Error(`La tarea con id [${id}] no se puede eliminar porque ya esta marcada como completada`);
+
+    let resp = data.filter(task => {
+        return task.id !== id;
+    });
+
+    return dao.SaveAll(resp);
+}
+
 const SetCompleteAsync = async(id) => {
     if (!Number(id))
         throw new Error('El parametro [id] debe ser de tipo numérico y positivo');
@@ -120,6 +140,7 @@ const TaskExist = (id) => {
 module.exports = {
     AddAsync,
     UpdateAsync,
+    DeleteAsync,
     SetCompleteAsync,
     GetAllPendingTask,
     GetAllCompleteTask,
