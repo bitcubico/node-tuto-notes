@@ -26,7 +26,23 @@ const AddAsync = async(description) => {
 }
 
 const UpdateAsync = async(id, description) => {
-    console.log('Actualiza en la base de datos la descripción de una tarea especifica');
+    if (!Number(id))
+        throw new Error('El parametro [id] debe ser de tipo numérico y positivo');
+
+    if (isEmpty(description))
+        throw new Error('El parametro [description] debe contar con información');
+
+    if (!TaskExist(id))
+        throw new Error(`La tarea con id [${id}] no existe`);
+
+    let data = GetAll();
+    let index = data.findIndex(task => task.id === id);
+
+    if (data[index].completed)
+        throw new Error(`La tarea con id [${id}] no se puede actualizar porque ya esta marcada como completada`);
+
+    data[index].description = description;
+    return dao.SaveAll(data);
 }
 
 const SetCompleteAsync = async(id) => {
@@ -34,7 +50,7 @@ const SetCompleteAsync = async(id) => {
         throw new Error('El parametro [id] debe ser de tipo numérico y positivo');
 
     if (!TaskExist(id))
-        return null;
+        throw new Error(`La tarea con id [${id}] no existe`);
 
     let data = GetAll();
     let index = data.findIndex(task => task.id === id);
@@ -95,7 +111,7 @@ const TaskExist = (id) => {
 
     let data = GetAll();
     if (isEmpty(data))
-        return null;
+        return false;
 
     let index = data.findIndex(task => task.id === id);
     return index > 0;

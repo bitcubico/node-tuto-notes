@@ -23,15 +23,17 @@ switch (action) {
         break;
     case 'upd':
         todoCore.UpdateAsync(argv.taskId, argv.description)
-            .then(console.log(`La tarea [${argv.taskId}] fue actualizada correctamente`.green))
-            .catch(err => console.log(err.red));
+            .then(resp => resp ?
+                console.log(`La tarea [${argv.taskId}] fue actualizada correctamente`.green) :
+                console.log(`Upss!! parece que tenemos problemas.`))
+            .catch(err => console.log(err.message.red));
         break;
     case 'set-complete':
         todoCore.SetCompleteAsync(argv.taskId)
             .then(resp => resp ?
                 console.log(`La tarea [${argv.taskId}] fue marcada como completada`.green) :
                 console.log(`La tarea [${argv.taskId}] no se encuentra dentro de las pendientes o no existe en el listado`))
-            .catch(err => console.log(err.red));
+            .catch(err => console.log(err.message.red));
         break;
     case 'get-all-pending':
         data = todoCore.GetAllPendingTask();
