@@ -1,4 +1,5 @@
 const argv = require('./config/yargs.config').argv;
+const isEmpty = require('is-empty');
 const colors = require('colors');
 const todoCore = require('./core/todo.core');
 
@@ -32,7 +33,21 @@ switch (action) {
         break;
     case 'get-all':
         data = todoCore.GetAll();
-        console.log(data ? data.green : 'La lista de tareas pendientes esta vacía');
+        if (isEmpty(data)) {
+            console.table('No hay tareas pendientes por hacer'.green);
+            break;
+        }
+
+        console.log('============== Tareas por hacer ==============='.blue);
+        data.forEach(task => {
+            console.log(
+                `\nId: \t\t${task.id}`.green +
+                `\nDescripción: \t${task.description}`.green +
+                `\nF. Creación: \t${task.creationDate}`.green +
+                '\n----------------'.green);
+        });
+
+        console.log('\n=============================================='.blue);
         break;
     case 'get-complete':
         data = todoCore.GetAllCompleteAsync();

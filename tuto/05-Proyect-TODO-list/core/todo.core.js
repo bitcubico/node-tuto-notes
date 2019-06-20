@@ -1,7 +1,8 @@
-const fs = require('fs');
 const isEmpty = require('is-empty');
 const datetime = require('node-datetime');
 const colors = require('colors');
+
+const dao = require('../dao/tasks.dao');
 
 let taskList = [];
 
@@ -9,6 +10,7 @@ const AddAsync = async(description) => {
     if (isEmpty(description))
         throw new Error('Por favor especifique una descripción para la tarea');
 
+    taskList = dao.GetAll();
     let date = datetime.create();
     let dateFormated = date.format('Y-m-d H:M:S');
 
@@ -20,6 +22,7 @@ const AddAsync = async(description) => {
     };
 
     taskList.push(task);
+    dao.SaveAll(taskList);
 
     return task;
 }
@@ -32,9 +35,7 @@ const SetCompleteAsync = async(id) => {
     console.log('Marca una tarea como completada');
 }
 
-const GetAll = () => {
-    console.log('Retorna todas las tareas pendientes por hacer');
-}
+const GetAll = () => dao.GetAll();
 
 const GetAllComplete = () => {
     console.log('Retorna todas las tareas completadas');
