@@ -1,34 +1,28 @@
+let description = {
+    alias: 'd',
+    demand: true,
+    type: 'string',
+    desc: 'Descripción de la tarea que se desea crear'
+}
+
+let taskId = {
+    alias: 'id',
+    demand: true,
+    type: 'integer',
+    desc: 'Identificador principal de la tarea'
+};
+
 let optAdd = {
-    description: {
-        alias: 'd',
-        demand: true,
-        type: 'string',
-        desc: 'Descripción de la tarea que se desea crear'
-    }
+    description: description
 };
 
 let optComplete = {
-    taskId: {
-        alias: 'id',
-        demand: true,
-        type: 'integer',
-        desc: 'Identificador principal de la tarea'
-    }
+    taskId: taskId
 }
 
 let optUpd = {
-    taskId: {
-        alias: 'id',
-        demand: true,
-        type: 'number',
-        desc: 'Identificador principal de la tarea'
-    },
-    description: {
-        alias: 'd',
-        demand: true,
-        type: 'string',
-        desc: 'Descripción de la tarea que se desea crear'
-    }
+    taskId: taskId,
+    description: description
 };
 
 const argv = require('yargs')
