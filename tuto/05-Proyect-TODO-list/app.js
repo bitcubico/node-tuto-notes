@@ -9,8 +9,16 @@ let data = null;
 switch (action) {
     case 'add':
         todoCore.AddAsync(argv.description)
-            .then(console.log('La tarea fue registrada correctamente'.green))
-            .catch(err => console.log(err.red));
+            .then(
+                resp => resp ?
+                console.log('La tarea fue registrada correctamente:\n'.green +
+                    '****************************'.blue +
+                    `\nId: \t\t${resp.id}`.blue +
+                    `\nDescripción: \t${resp.description}`.blue +
+                    `\nCompletada: \t${resp.completed ? "Si" : "No"}`.blue +
+                    `\nF. Creación: \t${resp.creationDate}`.blue) :
+                console.log('Upss!! Tenemos problemas'))
+            .catch(err => console.log(err.message.red));
         break;
     case 'upd':
         todoCore.UpdateAsync(argv.taskId, argv.description)

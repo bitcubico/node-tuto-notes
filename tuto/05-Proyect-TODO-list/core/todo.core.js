@@ -1,16 +1,34 @@
 const fs = require('fs');
+const isEmpty = require('is-empty');
+const datetime = require('node-datetime');
 const colors = require('colors');
 
-const AddAsync = async (description) => {
-    if(!description.length)
-        throw Error('Por favor especifique una descripción para la tarea');
+let taskList = [];
+
+const AddAsync = async(description) => {
+    if (isEmpty(description))
+        throw new Error('Por favor especifique una descripción para la tarea');
+
+    let date = datetime.create();
+    let dateFormated = date.format('Y-m-d H:M:S');
+
+    let task = {
+        id: taskList.length + 1,
+        description,
+        completed: false,
+        creationDate: dateFormated
+    };
+
+    taskList.push(task);
+
+    return task;
 }
 
-const UpdateAsync = async (id, description) => {
+const UpdateAsync = async(id, description) => {
     console.log('Actualiza en la base de datos la descripción de una tarea especifica');
 }
 
-const SetCompleteAsync = async (id) => {
+const SetCompleteAsync = async(id) => {
     console.log('Marca una tarea como completada');
 }
 
