@@ -1,3 +1,5 @@
+require
+
 function sumar(a, b) {
     return a + b;
 }
@@ -21,14 +23,14 @@ console.log(dividir_2(5, 5));
 
 // El apuntador this dentro de una función de flecha apunta a los objetos que están por fuera de la función.
 // Por esta razón se generará una excepción al tratar de obtener los datos del objeto con el this
-let heroe = {
+let hero = {
     name: 'Dead Pool',
     firstName: 'Wade',
     lastName: 'Winston',
     power: 'Regeneración',
-    getFullName: () => {
-        return `Heroe: ${this.name} - Nombre Real: ${this.firstName} ${this.lastName} - Poder: ${this.power}`;
+    fullName: function() {
+        return `Hero: ${this.name} - Real name: ${this.firstName} ${this.lastName} - Power: ${this.power}`;
     }
 };
 
-console.log(heroe.getFullName());
+console.log(hero.fullName());

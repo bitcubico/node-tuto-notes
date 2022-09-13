@@ -11,6 +11,7 @@ let salaries = [
 ];
 
 let getEmployeeById = (id) => {
+    console.log(`Empleado con id: ${id}`);
     return new Promise((resolve, reject) => {
         let employee = employees.find(response => response.Id === id);
         if (!employee)
@@ -20,15 +21,10 @@ let getEmployeeById = (id) => {
     });
 }
 
-getEmployeeById(1).then(
-    employee => console.log(employee),
-    (err) => console.log(err)
-);
-
 let getSalarie = (employee) => {
     return new Promise((resolve, reject) => {
         if (!employee) {
-            reject('Por favor especifique el parametro employee');
+            reject('Por favor especifique el parámetro employee');
             return;
         }
 
@@ -41,7 +37,20 @@ let getSalarie = (employee) => {
 }
 
 getEmployeeById(1).then(
-    employee => getSalarie(employee),
+    employee => { 
+        console.log(employee); 
+        return getSalarie(employee);
+    },
+    (err) => console.log(err)
+).then(
+    salarie => console.log(salarie),
+    (err) => console.log(err));
+
+getEmployeeById(10).then(
+    employee => { 
+        console.log(employee); 
+        return getSalarie(employee);
+    },
     (err) => console.log(err)
 ).then(
     salarie => console.log(salarie),
