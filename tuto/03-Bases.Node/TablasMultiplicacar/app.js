@@ -9,10 +9,10 @@ const multiplicar = require('./Core/multiplicar')
 // node app --base=<numero_base>
 let base = process.argv[2] != undefined ? process.argv[2].split('=')[1] : 1;
 
-multiplicar.BuildFile(base)
+multiplicar.createFileWithPromise(base)
     .then(file => console.log(`El archivo [${file}] fué creado exitosamente.`))
     .catch(err => console.log(err));
 
-multiplicar.BuildFileAsync(base)
+multiplicar.createFileWithAsync(base)
     .then(file => console.log(`El archivo [${file}] fué creado exitosamente.`))
     .catch(err => console.log(err));

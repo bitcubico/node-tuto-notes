@@ -1,14 +1,14 @@
 // https://nodejs.org/dist/latest-v12.x/docs/api/fs.html#fs_file_system
 const fs = require('fs');
 
-let writeDataFile = (path, data) => {
+let createFile = (path, data) => {
     fs.writeFile(path, data, (err) => {
         if (err)
             throw err;
     })
 }
 
-let GetMultiplicationData = (base, limit = 10) => {
+let getMultiplicationData = (base, limit = 10) => {
     if (!Number(base))
         throw Error('Debe especificar una base numérica mayor a cero');
 
@@ -19,12 +19,12 @@ let GetMultiplicationData = (base, limit = 10) => {
     return data;
 }
 
-let BuildFile = (base, limit) => {
+let createFileWithPromise = (base, limit, fileName) => {
     return new Promise((resolve, reject) => {
         try {
-            let path = `tabla-multiplicar-del-${base}.txt`;
-            let data = GetMultiplicationData(base, limit);
-            writeDataFile(path, data);
+            let path = fileName ?? `tabla-multiplicar-promise-del-${base}.txt`;
+            let data = getMultiplicationData(base, limit);
+            createFile(path, data);
 
             resolve(path);
         } catch (error) {
@@ -33,20 +33,16 @@ let BuildFile = (base, limit) => {
     });
 }
 
-let BuildFileAsync = async(base, limit) => {
+let createFileWithAsync = async(base, limit) => {
     try {
         let path = `tabla-multiplicar-async-del-${base}.txt`;
-        let data = GetMultiplicationData(base, limit, path);
-        writeDataFile(path, data);
-
-        return path;
+        return await createFileWithPromise(base, limit, path);
     } catch (error) {
         throw error;
     }
 }
 
 module.exports = {
-    BuildFile,
-    BuildFileAsync,
-    GetMultiplicationData
+    createFileWithPromise,
+    createFileWithAsync,
 }
