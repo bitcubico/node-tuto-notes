@@ -4,6 +4,9 @@
   "description": "Esta es una aplicación de línea de comando donde se exponen ejemplos del uso de npm en node",
   "main": "app.js",
   "scripts": {
+    "make-base-2": "node app make --base 2 -l 24",
+    "list-base-5": "node app list --base 5",
+    "help": "node app --help",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

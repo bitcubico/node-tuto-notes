@@ -45,4 +45,5 @@ let createFileWithAsync = async(base, limit) => {
 module.exports = {
     createFileWithPromise,
     createFileWithAsync,
+    getMultiplicationData,
 }
