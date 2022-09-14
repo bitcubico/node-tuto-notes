@@ -1,26 +1,26 @@
-let description = {
+const description = {
     alias: 'd',
     demand: true,
     type: 'string',
     desc: 'Descripción de la tarea que se desea crear'
 }
 
-let taskId = {
+const taskId = {
     alias: 'id',
     demand: true,
     type: 'integer',
     desc: 'Identificador principal de la tarea'
 };
 
-let optAdd = {
+const optAdd = {
     description: description
 };
 
-let optComplete = {
+const optComplete = {
     taskId: taskId
 }
 
-let optUpd = {
+const optUpd = {
     taskId: taskId,
     description: description
 };
@@ -31,7 +31,7 @@ const argv = require('yargs')
     .command('del', 'Elimina una tarea pendiente por hacer', optComplete)
     .command('set-complete', 'Marca una tarea pendiente como realizada', optComplete)
     .command('get-all-pending', 'Obtiene todas las tareas pendientes')
-    .command('get-all-complete', 'Obtiene todas las tareas completadas', )
+    .command('get-all-complete', 'Obtiene todas las tareas completadas')
     .help()
     .argv;
 
