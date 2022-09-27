@@ -3,14 +3,14 @@ const httpStatus = require('http-status-codes');
 const userController = require('../controllers/user.controller');
 const router = Router();
 
-router.get('/', userController.getUsers);
+router.get('/', userController.all);
 
-router.post('/', userController.postUsers);
+router.post('/', userController.create);
 
-router.put('/', userController.putUsers);
+router.put('/:id', userController.update);
 
-router.patch('/', userController.patchUsers);
+router.patch('/:id/change-password', userController.updatePassword);
 
-router.delete('/', userController.deleteUsers);
+router.delete('/:id', userController.remove);
 
 module.exports = router;

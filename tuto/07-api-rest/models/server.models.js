@@ -26,7 +26,13 @@ class Server {
    * @memberof Server
    */
   middlewares() {
+    // CORS
     this.app.use(cors());
+
+    // Convert request body to json
+    this.app.use(express.json());
+
+    // Public path
     this.app.use(express.static('public'));
   }
 

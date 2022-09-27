@@ -1,35 +1,92 @@
 const { response, request } = require('express');
 const httpStatus = require('http-status-codes');
 
-const getUsers = (req = response, res = request) => res.status(httpStatus.StatusCodes.OK).json({
-  status: httpStatus.ReasonPhrases.OK,
-  message: 'Hello from get of user controller',
-});
+const all = (req = request, res = response) => {
+  const { page = 0, limit = 10 } = req.query;
 
-const postUsers = (req = response, res = request) => res.status(httpStatus.StatusCodes.CREATED).json({
-  status: httpStatus.ReasonPhrases.CREATED,
-  message: 'Hello from post of user controller',
-});
+  res.status(httpStatus.StatusCodes.OK).json( {
+    status: httpStatus.StatusCodes.OK,
+    message: 'Getting users',
+    body: {
+      page,
+      limit
+    }
+  });
+};
 
-const putUsers = (req = response, res = request) => res.status(httpStatus.StatusCodes.ACCEPTED).json({
-  status: httpStatus.ReasonPhrases.ACCEPTED,
-  message: 'Hello from put of user controller',
-});
+const create = (req = request, res = response) => { 
+  const {
+    username, 
+    firstName, 
+    lastName, 
+    birthday,
+    identificationNumber } = req.body;
 
-const patchUsers = (req = response, res = request) => res.status(httpStatus.StatusCodes.ACCEPTED).json({
-  status: httpStatus.ReasonPhrases.ACCEPTED,
-  message: 'Hello from patch of user controller',
-});
+  res.status(httpStatus.StatusCodes.CREATED).json({
+    status: httpStatus.ReasonPhrases.CREATED,
+    message: 'User created',
+    body: {
+      username,
+      firstName,
+      lastName,
+      birthday,
+      identificationNumber
+    }
+  });
+};
 
-const deleteUsers = (req = response, res = request) => res.status(httpStatus.StatusCodes.OK).json({
-  status: httpStatus.ReasonPhrases.OK,
-  message: 'Hello from delete of user controller',
-});
+const update = (req = request, res = response) => { 
+  const { id } = req.params;
+  const {
+    firstName, 
+    lastName, 
+    birthday,
+    identificationNumber } = req.body;
+
+  res.status(httpStatus.StatusCodes.OK).json({
+    status: httpStatus.ReasonPhrases.OK,
+    message: 'User updated',
+    body: {
+      id,
+      firstName,
+      lastName,
+      birthday,
+      identificationNumber
+    }
+  });
+};
+
+const updatePassword = (req = request, res = response) => { 
+  const { id } = req.params;
+  const {
+    currentPassword, 
+    newPassword } = req.body;
+
+  res.status(httpStatus.StatusCodes.OK).json({
+    status: httpStatus.ReasonPhrases.OK,
+    message: 'Password changed',
+    body: {
+      id,
+      currentPassword,
+      newPassword
+    }
+  });
+};
+
+const remove = (req = request, res = response) => {
+  const { id } = req.params;
+
+  res.status(httpStatus.StatusCodes.OK).json({
+    status: httpStatus.ReasonPhrases.OK,
+    message: 'User deleted',
+    body: { id }
+  });
+}
 
 module.exports = {
-  getUsers,
-  postUsers,
-  putUsers,
-  patchUsers,
-  deleteUsers
+  all,
+  create,
+  update,
+  updatePassword,
+  remove
 };
