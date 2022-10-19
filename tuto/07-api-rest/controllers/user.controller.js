@@ -1,5 +1,6 @@
 const { response, request } = require('express');
 const httpStatus = require('http-status-codes');
+const User = require('../models/user.model');
 
 const all = (req = request, res = response) => {
   const { page = 0, limit = 10 } = req.query;
@@ -14,24 +15,15 @@ const all = (req = request, res = response) => {
   });
 };
 
-const create = (req = request, res = response) => { 
-  const {
-    username, 
-    firstName, 
-    lastName, 
-    birthday,
-    identificationNumber } = req.body;
+const create = async (req = request, res = response) => { 
+  const userData = req.body;
+  const user = new User(userData);
+  await user.save();
 
   res.status(httpStatus.StatusCodes.CREATED).json({
     status: httpStatus.ReasonPhrases.CREATED,
     message: 'User created',
-    body: {
-      username,
-      firstName,
-      lastName,
-      birthday,
-      identificationNumber
-    }
+    body: userData
   });
 };
 
