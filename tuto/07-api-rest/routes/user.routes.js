@@ -1,11 +1,20 @@
 const { Router } = require('express');
-const httpStatus = require('http-status-codes');
+const { check } = require('express-validator');
+
+const { NAME, EMAIL, PASSWORD, ROLE, ROLE_LIST } = require('../models/user.model');
+
 const userController = require('../controllers/user.controller');
 const router = Router();
 
 router.get('/', userController.all);
 
-router.post('/', userController.create);
+router.post('/', [
+  check(NAME, `${NAME} is required`).not().isEmpty(),
+  check(PASSWORD, `${PASSWORD} is required`).not().isEmpty(),
+  check(PASSWORD, `${PASSWORD} must be strong`).isStrongPassword(),
+  check(EMAIL, `${EMAIL} is invalid`).isEmail(),
+  check(ROLE, `${ROLE} is invalid`).isIn(ROLE_LIST)
+] ,userController.create);
 
 router.put('/:id', userController.update);
 

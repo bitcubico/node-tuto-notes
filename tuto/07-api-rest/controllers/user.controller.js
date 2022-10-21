@@ -1,7 +1,9 @@
 const { response, request } = require('express');
 const httpStatus = require('http-status-codes');
 const bcrypt = require('bcryptjs');
-const User = require('../models/user.model');
+const { validationResult } = require('express-validator');
+
+const userModel = require('../models/user.model');
 
 const all = (req = request, res = response) => {
   const { page = 0, limit = 10 } = req.query;
@@ -17,17 +19,37 @@ const all = (req = request, res = response) => {
 };
 
 const create = async (req = request, res = response) => { 
-  const { name, email, password, role } = req.body;
-  const user = new User({ name, email, password, role });
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(httpStatus.StatusCodes.BAD_REQUEST).json(errors);
+    }
 
-  user.password = encryptPassword(password);
-  await user.save();
+    const { name, email, password, role } = req.body;
+    if (await existsUserWithThisEmail(email)) {
+      return res.status(httpStatus.StatusCodes.BAD_REQUEST).json({
+        status: httpStatus.ReasonPhrases.BAD_REQUEST,
+        error: 'This email exists'
+      });
+    }
 
-  res.status(httpStatus.StatusCodes.CREATED).json({
-    status: httpStatus.ReasonPhrases.CREATED,
-    message: 'User created',
-    body: user
-  });
+    const user = new userModel.User({ name, email, password, role });
+
+    user.password = encryptPassword(password);
+    await user.save();
+
+    res.status(httpStatus.StatusCodes.CREATED).json({
+      status: httpStatus.ReasonPhrases.CREATED,
+      message: 'User created',
+      body: user
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(httpStatus.StatusCodes.INTERNAL_SERVER_ERROR).json({
+      status: httpStatus.ReasonPhrases.INTERNAL_SERVER_ERROR,
+      error: 'Internal server error'
+    });
+  }
 };
 
 const update = (req = request, res = response) => { 
@@ -81,6 +103,10 @@ const remove = (req = request, res = response) => {
 const encryptPassword = (password) => {
   const salt = bcrypt.genSaltSync();
   return bcrypt.hashSync(password, salt);
+}
+
+const existsUserWithThisEmail = async (email) => {
+  return await userModel.User.findOne({ email }) !== null;
 }
 
 module.exports = {
