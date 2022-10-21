@@ -1,5 +1,6 @@
 const { response, request } = require('express');
 const httpStatus = require('http-status-codes');
+const bcrypt = require('bcryptjs');
 const User = require('../models/user.model');
 
 const all = (req = request, res = response) => {
@@ -16,14 +17,16 @@ const all = (req = request, res = response) => {
 };
 
 const create = async (req = request, res = response) => { 
-  const userData = req.body;
-  const user = new User(userData);
+  const { name, email, password, role } = req.body;
+  const user = new User({ name, email, password, role });
+
+  user.password = encryptPassword(password);
   await user.save();
 
   res.status(httpStatus.StatusCodes.CREATED).json({
     status: httpStatus.ReasonPhrases.CREATED,
     message: 'User created',
-    body: userData
+    body: user
   });
 };
 
@@ -73,6 +76,11 @@ const remove = (req = request, res = response) => {
     message: 'User deleted',
     body: { id }
   });
+}
+
+const encryptPassword = (password) => {
+  const salt = bcrypt.genSaltSync();
+  return bcrypt.hashSync(password, salt);
 }
 
 module.exports = {
